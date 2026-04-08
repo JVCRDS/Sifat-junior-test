@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.App {
+  background-color: rgb(15, 31, 49);
+  background: linear-gradient(to bottom, rgb(15, 31, 49), rgb(5, 12, 20));
+  padding: 20px;
+  height: 100vh;
+}
+.retangulo {
+  width: 800px;
+  height: 800px;
+  background-color: #152336;
+  border-radius: 8px;
+  padding: 50px;
+  margin-left: 900px;
+  margin-top: -400px;
+  overflow-y: auto;
+}
+
+.logo {
+  margin-left: 250px;
+  margin-top: 150px;;
+  
+}
+
+
+.botoes{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 1000px;
+  gap: 20px;               
+  margin-top: 20px;
+}
+
+
+.btn{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  background-color: #1c5bad;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: cente;  
+}
+
+.btn:hover {
+  background-color: #1a4e9c;
+}
+
+.tabela{
+  background-color: rgb(18, 36, 53);
+  border: 2px solid #05132b;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+}
+
+th,td{
+ padding: 10px;
+ border-bottom: 1px solid #021024;
+}
