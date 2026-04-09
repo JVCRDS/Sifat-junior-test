@@ -70,3 +70,52 @@ th,td{
  padding: 10px;
  border-bottom: 1px solid #021024;
 }
+
+#nav{
+  font-family: 'Montserrat', sans-serif;
+  background-color: #1c5bad;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;  
+}
+
+#nav:hover {
+  background-color: #1a4e9c;
+}
+
+#search{
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;  
+}
+
+#tb2{
+  width: 100%;
+  table-layout: fixed;
+}
+
+#tb2tr{
+  background-color: rgb(18, 36, 53);
+  border: 2px solid #05132b;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  padding: 1000px;
+}
+
+#tb2tr td{
+
+  width: 25%;
+  border-bottom: 1px solid #05132b;
+}
