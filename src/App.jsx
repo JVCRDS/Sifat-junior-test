@@ -3,7 +3,7 @@ import { toast, Toaster } from "react-hot-toast";
 import "./App.css";
 
 function App() {
-  // states 
+  // states
   const [carregando, setCarregandoFat] = useState(false);
   const [tabelaFaturamento, setTabelaFaturamento] = useState(null);
   const [pagAtual, setPagAtual] = useState(1);
@@ -16,8 +16,14 @@ function App() {
   const [tabelaEstoque, setTabelaEstoque] = useState(null);
   const [carregandoProdutos, setCarregandoProdutos] = useState(false);
   const [tabelaAtiva, setTabelaAtiva] = useState("faturamento");
-
-
+  const [formProduto, setFormProduto] = useState({
+    id: "",
+    nome: "",
+    idGrupo: "",
+    precoVenda: "",
+    quantidadeEstoque: "",
+  });
+  const [mostrarForm, setMostrarForm] = useState(false);
 
   // visualizar faturamento
   useEffect(() => {
@@ -180,7 +186,7 @@ function App() {
         break;
     }
   };
-   const atualizarTabela = () => {
+  const atualizarTabela = () => {
     if (dadosCompletos.length === 0) return;
 
     const inicio = (pagAtual - 1) * itensPorPag;
@@ -337,7 +343,7 @@ function App() {
       </div>
     );
     setTabelaFaturamento(tabela);
-   };
+  };
   const carregarFaturamento = async () => {
     setCarregandoFat(true);
     try {
@@ -364,14 +370,13 @@ function App() {
     }
   };
 
-
   // visualizar produtos cadastrados
- useEffect(() => {
+  useEffect(() => {
     if (tabelaAtiva === "estoque" && dadosCompletos.length > 0) {
       atualizarTabelaEstoque();
     }
- }, [pagAtual, dadosCompletos, menuAberto, tabelaAtiva]);
-   const filtraTabelaEstoque = (filtro) => {
+  }, [pagAtual, dadosCompletos, menuAberto, tabelaAtiva]);
+  const filtraTabelaEstoque = (filtro) => {
     const dados = [...dadosCompletos];
 
     switch (filtro) {
@@ -584,7 +589,7 @@ function App() {
         <table>
           <thead>
             <tr>
-              <th >ID</th>
+              <th>ID</th>
               <th>Produto</th>
               <th>Quantidade</th>
               <th>Valor Unitário</th>
@@ -632,7 +637,6 @@ function App() {
       setPagAtual(1);
 
       atualizarTabelaEstoque();
-      
 
       if (!response.ok) {
         throw new Error("Erro na requisição");
@@ -647,6 +651,11 @@ function App() {
 
   //cadastrar produtos
   const cadastrarProdutos = async (id, nome, idGrupo, preco, quantidade) => {
+    if (!nome || !preco || !quantidade) {
+      toast.error("Preencha todos os campos obrigatórios!");
+      return;
+    }
+
     try {
       const response = await fetch(
         "https://my-json-server.typicode.com/Sifat-devs/db-desafio-frontend/produtos_cadastrados",
@@ -656,15 +665,30 @@ function App() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: id,
+            id: id || Date.now(),
             nome: nome,
-            idGrupo: idGrupo,
-            precoVenda: preco,
-            quantidadeEstoque: quantidade,
+            idGrupo: idGrupo || 1,
+            precoVenda: parseFloat(preco),
+            quantidadeEstoque: parseInt(quantidade),
           }),
         },
       );
-      if (!response || !response.ok) {
+
+      if (response.ok) {
+        toast.success("Produto cadastrado com sucesso!");
+        // Limpa o formulário
+        setFormProduto({
+          id: "",
+          nome: "",
+          idGrupo: "",
+          precoVenda: "",
+          quantidadeEstoque: "",
+        });
+        // Volta para a tabela de estoque
+        setTabelaAtiva("estoque");
+        // Recarrega os produtos
+        carregarProdutos();
+      } else {
         throw new Error();
       }
     } catch (error) {
@@ -672,9 +696,111 @@ function App() {
       toast.error("Erro ao cadastrar o produto");
     }
   };
+  const formsCadastro = (
+    <div className="form-cadastro">
+      <h2>Cadastrar Novo Produto</h2>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          cadastrarProdutos(
+            formProduto.id,
+            formProduto.nome,
+            formProduto.idGrupo,
+            formProduto.precoVenda,
+            formProduto.quantidadeEstoque,
+          );
+        }}
+      >
+        <div className="form-group">
+          <label>ID (opcional):</label>
+          <input
+            type="number"
+            name="id"
+            placeholder="Auto incrementado"
+            value={formProduto.id}
+            onChange={(e) =>
+              setFormProduto({ ...formProduto, id: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Nome do Produto:*</label>
+          <input
+            type="text"
+            name="nome"
+            placeholder="Digite o nome do produto"
+            value={formProduto.nome}
+            onChange={(e) =>
+              setFormProduto({ ...formProduto, nome: e.target.value })
+            }
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>ID do Grupo:</label>
+          <input
+            type="number"
+            name="idGrupo"
+            placeholder="Digite o ID do grupo"
+            value={formProduto.idGrupo}
+            onChange={(e) =>
+              setFormProduto({ ...formProduto, idGrupo: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Preço de Venda:*</label>
+          <input
+            type="number"
+            step="0.01"
+            name="precoVenda"
+            placeholder="Digite o preço"
+            value={formProduto.precoVenda}
+            onChange={(e) =>
+              setFormProduto({ ...formProduto, precoVenda: e.target.value })
+            }
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Quantidade em Estoque:*</label>
+          <input
+            type="number"
+            name="quantidadeEstoque"
+            placeholder="Digite a quantidade"
+            value={formProduto.quantidadeEstoque}
+            onChange={(e) =>
+              setFormProduto({
+                ...formProduto,
+                quantidadeEstoque: e.target.value,
+              })
+            }
+            required
+          />
+        </div>
+
+        <div className="form-buttons">
+          <button type="submit" className="btn-submit">
+            Cadastrar
+          </button>
+          <button
+            type="button"
+            className="btn-cancel"
+            onClick={() => setTabelaAtiva("estoque")}
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 
   // funções gerais
-    const mudaPag = (sentido) => {
+  const mudaPag = (sentido) => {
     const totalPaginas = Math.ceil(totalItens / itensPorPag);
 
     if (sentido > 0 && pagAtual < totalPaginas) {
@@ -717,8 +843,9 @@ function App() {
           className="btn"
           id="cadastrar-produtos"
           onClick={() => {
-            cadastrarProdutos();
+            setTabelaAtiva("cadastro");
             setTabelaFaturamento(null);
+            setTabelaEstoque(null);
           }}
         >
           Cadastrar Produtos
@@ -728,7 +855,7 @@ function App() {
       <div className="retangulo">
         {tabelaAtiva === "faturamento" && tabelaFaturamento}
         {tabelaAtiva === "estoque" && tabelaEstoque}
-        {tabelaAtiva === "cadastro" && formsCadastro }
+        {tabelaAtiva === "cadastro" && formsCadastro}
       </div>
 
       <Toaster />
