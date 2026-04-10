@@ -204,7 +204,7 @@ function App() {
         <div style={{ position: "relative", display: "inline-block" }}>
           <button id="nav" onClick={() => setMenuAberto(!menuAberto)}>
             <img
-              src="/filter.svg"
+              src="/Sifat-junior-test/filter.svg"
               style={{ height: "10px", width: "10px" }}
               alt="filter"
             />
@@ -814,7 +814,7 @@ function App() {
   return (
     <div className="App">
       <h1 className="logo">
-        <img src="/logo.svg" alt="Logo" style={{ height: "120px" }} />
+        <img src="/Sifat-junior-test/logo.svg" alt="Logo" style={{ height: "120px" }} />
       </h1>
       <div className="botoes">
         <button
