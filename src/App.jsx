@@ -470,7 +470,7 @@ function App() {
         <div style={{ position: "relative", display: "inline-block" }}>
           <button id="nav" onClick={() => setMenuAberto(!menuAberto)}>
             <img
-              src="/filter.svg"
+              src="/Sifat-junior-test/filter.svg"
               style={{ height: "10px", width: "10px" }}
               alt="filter"
             />
